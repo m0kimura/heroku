@@ -1,0 +1,27 @@
+{
+  "name": "web-project",
+  "version": "1.0.0",
+  "description": "Heroku Project for cmsserver",
+  "engines": {
+    "node": "8.1.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/m0kimura/heroku-project"
+  },
+  "keywords": [
+    "heroku",
+    "cms",
+    "nodejs"
+  ],
+  "author": "Michihiro Kimura <kimura@kmrweb.net> (http://www.kmrweb.net)",
+  "license": "MIT",
+  "dependencies": {
+    "forever": "^0.15.3",
+    "ke-cms": "^1.1.1"
+  }
+}

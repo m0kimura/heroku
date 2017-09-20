@@ -1,0 +1,70 @@
+-PARM 16/06/01:
+  Template  type1
+  Title     レスポンシブサンプル
+  Short     サンプル
+  description レスポンシブを利用する場合の簡単なサンプル
+  keyword   responsive
+  Sort      C50
+  Valid     16/06/01:
+-HISTORY
+  16/02/01  "レスポンシブサンプルのページを追加しました。"
+-BODY 16/06/01:
+
+<header pos="Behind">
+/* ヘッダ画像でのGravityスタイル */
+  <img class="PhotoG" src="/imaga/header.png" zoom=0.8 gravityX=0.4 gravityY=0.5 />
+</header>
+<section id="top">
+<h2>画像の定義例</h2>
+  <p>あいうえおかきくけこ</p>
+  <img src="/image/sample.png" class="photoP" alt="親幅合わせ"/>
+  <img src="/image/sample.png" class="photoS" alt="ページ幅スライド"/>
+  <img src="/image/sample.png" class="photoM" alt="モバイルのみ親要素合わせ"/>
+  <img src="/image/sample.png" class="photoU" alt="クリック時ポップアップ"/>
+  <img src="/image/sample.png" class="photoD" psize=600 msize=300 alt="デバイスごと固定サイズ"/>
+  <p>さしすせそたちつてと</p>
+</section>
+
+<section id="source">
+<h2>デバイス対応</h2>
+  <div class="Pc">
+    この部分はパソコンの時のみ表示されます。
+  </div>
+
+  <div class="Pc">
+    この部分はモバイルの時のみ表示されます。
+  </div>
+
+  <div>
+    この部分はパソコンとモバイルで画像が入れ替わります。
+    <img class="Depend" src="" pc="/image/pc.png" mobile="/image/mobile.png"/>
+  </div>
+
+</section>
+
+<section id="cell">
+<h2>セル調整の例</h2>
+  <div class="Cell" priority="width" pc=300 mobile=200>
+    <div><img src="/image/cell1.png"/></div><div><img src="/image/cell2.png"/></div>
+    <div><img src="/image/cell3.png"/></div><div><img src="/image/cell4.png"/></div>
+    <div><img src="/image/cell5.png"/></div><div><img src="/image/cell6.png"/></div>
+    <div><img src="/image/cell7.png"/></div><div><img src="/image/cell8.png"/></div>
+  </div>
+</section>
+
+
+<section id="sns">
+<h2>SNSの例</h2>
+　<img class="Sns" src="/image/facebook.png" alt="facebook" />
+　<img class="Sns" src="/image/twitter.png" alt="twitter" />
+　<img class="Sns" src="/image/gplus.png" alt="gplus" />
+</section>
+<section id="carousel">
+<h2>カルーセルの例</h2>
+  <div class="Carousel" priority="num" num=5 nummb=3 indicator="indi"
+    onsign="/imnage/on.png" offsign="/image/off.png">
+    <img src="/image/photo1.jpg"/><img src="/image/photo2.jpg"/><img src="/image/photo3.jpg"/>
+    <img src="/image/photo4.jpg"/><img src="/image/photo5.jpg"/><img src="/image/photo6.jpg"/>
+  </div>
+  <div id="indi"></div>
+</section>

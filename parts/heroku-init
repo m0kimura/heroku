@@ -1,0 +1,24 @@
+#!/bin/bash
+echo "node version"
+node -v
+echo "npm version"
+npm -v
+echo "git version"
+git --version
+read -p "メールアドレスを入力してください。" mail
+read -p "氏名をローマ字で（FirstName LastName)入力してください。" name
+echo ID=${user} Name=${name}
+read -p "間違いはありませんか(y/n)" x
+if [[ ${x} != "y" ]]; then
+  echo "最初からやり直してください。"
+  exit
+fi
+git config --global user.name "${mail}"
+git config --global user.email ${user}
+cd project
+git init
+git add -A
+git commit -m "first commit"
+heroku create
+git push heroku master
+heroku ps:scale web=1

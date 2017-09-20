@@ -1,0 +1,70 @@
+-PARM 16/01/21:
+  template  type1
+  title     USBデバイス制御
+  short     サーバー
+  description サーバーやパソコンに直接USB接続した装置との通信の方法を解説しています。
+  keyword   USBシリアル制御
+  sort      C35
+  valid     16/02/01:
+-HISTORY
+  16/02/01  "USBデバイス制御のページを追加しました。"
+-BODY 16/02/01:
+
+<section id="top">
+<h2>はじめに</h2>
+  <p>WiFiだけでなくサーバーやパソコンにマイコンを直接接続して通信を行う例をご紹介します。
+    いくつかのWiFiマイコンが正常に稼働しているかを定期的にチェックして、
+    LEDパイロットランプを点滅させます。</p>
+  <img src="/image/usbcontrol.png" class="photoL" alt="USB通信イメージ図"/>
+  <p>nodejsのアプリはWiFi経由でマイコンにヘルスメッセージを送り、返信を受けます。
+    返信があればパイロットランプを点灯しなければパイロットランプを消灯します。</p>
+  <p>パイロットランプはサーバーとUSBケーブルで接続されたマイコンに装備されており、
+    マイコンにUSB経由でのシリアル通信によって制御されます。</p>
+
+  <dl class="step"><dt>仕様</dt><dd><ol>
+    <li>サーバーとして常駐しながら監視を定期的に繰り返すプログラムとします。</li>
+    <li>登録されたデータ（JSON）を参照してそれぞれを監視します。</li>
+    <li>監視結果はUSB接続されたマイコンを通じてLEDを点灯します。>/li>
+  </ol></dd></dl>
+
+  <p><a href="/micro/usb.html">
+    USB接続によるマイコンパイロットランプはこちら紹介しています。</a></p>
+</section>
+
+<section id="source">
+<h2>ソース</h2>
+  <dl class="source"><dt>keepalive.js</dt>
+    <dd class="load" href="/source/keepalive.js"></dd>
+  </dl>
+
+  <dl class="source"><dt>station.json</dt>
+    <dd class="load" href="/source/station.json"></dd>
+  </dl>
+
+</section>
+
+<section id="explanation">
+<h2>解説</h2>
+
+  <dl class="expla"><dd><table><tbody>
+    <tr><th>ソース</th><th>説明</th></tr>
+    <tr><td>var Kj=require('knjsdom')</td><td>DOMを処理するライブラリを使います</td></tr>
+    <tr><td>var Ks=require('knserial')</td><td>Serialインターフェイスライブラリを使います</td></tr>
+    <tr><td>Ks.localConf()</td><td>ローカルファイルを呼び出す関数です</td></tr>
+    <tr><td>Kj.getJson()</td><td>URLを指定してJSONファイルを呼び出します</td></tr>
+    <tr><td>Ks.writeSerial()</td><td>シリアル経由でメッセージを送信します。</td></tr>
+  </tbody></table><dt>weather.js解説</dt></dl>
+
+</section>
+
+<section id="library">
+<h2>ライブラリ</h2>
+  <dl class="source"><dt>knjsdom.js</dt>
+    <dd class="load" href="/source/knjsdom.js"></dd>
+  </dl>
+
+  <dl class="source"><dt>knserial.js</dt>
+    <dd class="load" href="/source/knserial.js"></dd>
+  </dl>
+
+</section>

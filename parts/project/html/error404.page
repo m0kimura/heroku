@@ -1,0 +1,15 @@
+-PARM 16/01/21:
+  Template  type1
+  Title       ページがみつかりません
+  description ページがみつかりません。
+  keyword     404
+  Short       ホーム
+  Sort        ZZZ
+  Valid       16/01/01:
+  Group       top
+-BODY 16/01/21:
+
+<section id="top">
+  <h2> </h2>
+  <img src="/image/error404.png" class="photoL" alt="ページがみつかりません。"/>
+</section>

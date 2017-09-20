@@ -1,0 +1,450 @@
+-PARM 16/01/21:
+  Title     NodeJsによるコンテンツ管理
+  Short     サーバー
+  description "このサイトをl構成しているContents Management Systemを紹介しています。"
+  keyword   CMS/コンテンツ管理システム
+  Sort      C12
+  Priority  0.7
+  Valid     16/04/10:
+-HISTORY
+  16/04/10  "「コンテンツ管理（CMS）」を追加しました。"
+  16/04/22  "「コンテンツ管理（CMS）」の機能追加を行いました。"
+  17/11/10  DockerによるCMSサーバーの実行を追加しました。
+
+-BODY 16/04/01:
+
+<section id="Top">
+<h2>はじめに</h2>
+  <p>このサイトはオリジナルなCMS(Contents Management System)を使用して制作されています。
+    中小規模のサイト運営での合理的で効果的な機能を数多く提供する汎用的なコンテンツ管理システムです。</p>
+
+  <div class="topic">
+  <h3>CMSの特徴</h3>
+    <dl class="step"><dt>CMSの特徴一覧</dt><dd><ol>
+      <li>nodejsを利用して基本機能から展開しているので、セットアップが簡単です。</li>
+      <li>テンプレートとパラメタの穴埋め機能により、コンテンツそのものに集中できます。</li>
+      <li>HTMLのタグ形式を利用した機能付加がされているので、制作者フレンドリーになっています。</li>
+      <li>構成やナビゲーション、メニューなどの部品が揃っており、簡単で一貫性のあるメンテナンスが可能です。</li>
+      <li>有効期間機能を持っており、コンテンツアップのスケジューリングができ、アップは自動的に行われます。</li>
+      <li>データーからの展開機能やソース展開機能などにより、部分修正、追加などが容易にだれでも行えます。</li>
+      <li></li>
+    </ol></dd></dl>
+  </div>
+
+  <div class="topic">
+  <h3>基本構成</h3>
+    <img src="/image/cmsimage.png" class="photoM" alt="CMSの基本構成"/>
+    <p>左の図にあるように、HTMLのページはテンプレート、ページコンテンツ、パラメタ（基本とテーマ設定）
+      で構成され作り出されます。</p>
+    <p>基本的な枠組みはテンプレートにあります。
+      テンプレートは穴埋め形式になっていて、
+      その中でページ毎に変わるものはページコンテンツからデータが送り込まれます。
+      また、テーマ（トップの次に来る２階層目）毎に変わるものはテーマ設定から、
+      サイト全体に一定なものは基本設定から送り込まれます。</p>
+    <p>例えばヘッダ部のイメージ画像を全ページに表示するなら、基本設定に書いておけば、
+      全ページで利用出来て、必要なときには一度に変更することができます。
+      同様にテーマのタイトルを同一テーマページすべてに表示するのであれば、
+      テーマ設定に書いておけば便利です。</p>
+  </div>
+  
+  <div class="topic">
+  <h3>インストール</h3>
+    <dl class="howto"><dd>git clone https://github.com/m0kimura/web-project.git</dd><dt>
+      上記フォルダ構成をgithubからインストールします。
+    </dt></dl>
+    「html」「local」「data」のフォルダは各自作成して下さい。インストールはプログラム環境のみです。
+  </div>
+
+</section>
+
+
+<section id="template">
+<h2>テンプレート</h2>
+  <p>ページの骨組みとなるのがテンプレートです。
+    具体的にこのサイトで使用しているテンプレートを例に、説明してゆきましょう。</p>
+
+  <div class="topic">
+  <h3>テンプレートの例</h3>
+    <dl class="source"><dt>テンプレートの例</dt>
+      <dd class="Load" href="/source/type1.htm"></dd>
+    </dl>
+  </div>
+
+  <div class="topic">
+  <h3>テンプレート例の説明</h3>
+  
+    <p>テンプレートの例をご覧ください。基本的には殆どがHTML文になっています。
+      ただ、肝心のコンテンツが全く見当たりません。
+      代わりに、「＃{title}」「＃{group}」といったものや、
+      「cms-page」「cms-parts」と言った見慣れない属性があります。
+      これらがこのCMSの機能部分になります。</p>
+    <p>＃{xxxxxx}が穴埋め部分で設定（パラメタ）から呼び出される「変数」になります。
+      基本設定やテーマ設定、ページコンテンツから、
+      変数のキーワードを照らしあわせてその値が持って来られます。
+      基本設定とテーマ設定に同じキーワードがあればテーマ設定が優先されます。
+      さらに、ページコンテンツにも同じキーワードがあればページコンテンツが最も優先されます。</p>
+    <img src="/image/cmsdevelop.png" class="photoL" alt="CMS展開イメージ" />
+    <p>一方、「cms-page」「cms-parts」は部品をよびだし、
+      それが指定されたタグの内側に展開してくれます。
+      「cms-page="BODY"」はページコンテンツのBODY部分を取り出して展開するという機能です。</p>
+    <p>「cms-parts="navbar"」はナビゲーションパーツを呼び出し展開する機能です。</p>
+    <p>このCMSでは、ページ構造をそのページコンテンツから組み立てて自動的に理解し、
+      サイトメニューができるまでのデータを内部的に保持していますので、
+      すべてのナビゲーションやメニューを矛盾なく自動的に構成します。
+      さらに、googleの「sitemap.xml」データも自動的に作成できます。</p>
+    <p>テンプレートはいくつでも作成、利用できますが、
+      中小規模のサイトでは１つから数種類程度で構成できるものとおもいます。
+      実際、このサイトでは上記にあるテンプレート１つで構成されています。</p>
+      
+  </div>
+
+  <div class="topic">
+  <h3>設定（パラメタ）</h3>
+
+    <dl class="source"><dt>基本設定の例/index.cfg</dt>
+      <dd class="Load" href="/source/top.cfg"></dd>
+    </dl>
+
+    <p>こちらが基本設定になります。この中で「CmsVersion」「basecolor」「folders」
+      の３つだけが決められたキーワードです。　それ以外は自由に設定されたパラメタです。</p>
+
+    <dl class="expla"><dd><table><tbody>
+      <tr><th>キーワード</th><th>説明</th></tr>
+      <tr><td>CmsVersion</td><td>このサイトのバージョン表記です。"/"の後ろには有効期間を記載します。</td></tr>
+      <tr><td>basecolor</td><td>CSSに使用される色名を指定します。ベースカラーの色が選べます。</td></tr>
+      <tr><td>folders</td><td>構成されるサブフォルダ（テーマフォルダ）をJson配列で記載します。</td></tr>
+      <tr><td>titile</td><td>ローカル変数、ここではタイトル表記用に使用しています。</td></tr>
+      <tr><td>author</td><td>ローカル変数、ここでは製作者名として使用しています。</td></tr>
+      <tr><td>description</td><td>ローカル変数、ここではdescription用に使用しています。</td></tr>
+      <tr><td>history</td><td>履歴自動編集機能を使う指定です。</td></tr>
+      <tr><td>image</td><td>ローカル変数、ここではヘッダ部のイメージファイル用に指定しています。</td></tr>
+    </tbody></table></dd><dt>基本設定</dt></dl>
+
+    <dl class="source"><dt>テーマ設定の例/server/index.cfg</dt>
+      <dd class="Load" href="/source/server.cfg"></dd>
+    </dl>
+
+    <p>こちらが「サーバー」のテーマ設定になります。すべて自由に設定されたパラメタです。
+      ここで設定されたパラメタは「サーバー/server」フォルダの中でのみ有効となります。</p>
+    <p>例えば「image」キーワードは基本設定にもありました。
+      これはヘッダ部の画像ファイルを指定するために使われていますが、
+      トップページで使われている画像とこのテーマ内で使われている画像を変えるために指定されています。
+      つまり、ここで指定されたキーワードが優先されてページに利用されます。</p>
+
+  </div>
+
+</section>
+
+
+<section id="page">
+<h2>ページコンテンツ</h2>
+  <p>ページコンテンツはそれぞれのページの独自のコンテンツ部分になります。
+    ページコンテンツはページのパラメタとボディコンテンツの大きく２つの部分から構成されます。</p>
+  <p>下にこのサイトの「USBデバイス制御」ページのページコンテンツを載せました。
+    「-PARM」から下がパラメタで「-BODY」から下がボディコンテンツです。
+    また、更新履歴用に「-HISTORY」ブロック内に日付をタイトルを付けて更新履歴を自動追加できます。</p>
+  <p>ボディコンテンツ部分がテンプレートの「cms-page」属性が指定されたタグの内部に展開されます。
+    その際に、上記の基本設定やテーマ設定、このページコンテンツ内のパラメタが
+    「変数」部分に穴埋めされます。</p>
+
+  <dl class="source"><dt>コンテンツの例/server/usbcontrol.page</dt>
+    <dd class="Load" href="/source/usbcontrol.page"></dd>
+  </dl>
+    
+  <p>この場合、ボディはtop, source, explanation, libraryの４つのセクションから構成されています。
+    これ以外はすべてテンプレートから展開されているのです。</p>
+  <p>パラメタは７つありますが、「template」、「sort」、「valid」の３つが決められたパラメタです。
+    以下に解説します。</p>
+  
+  <dl class="expla"><dd><table><tbody>
+    <tr><th>キーワード</th><th>説明</th></tr>
+    <tr><td>template</td><td>このページはどのテンプレートを使うかを指定しています。</td></tr>
+    <tr><td>sort</td><td>ページの並べる順序を書いています。サイト内で一意にします。
+      何桁でも指定できますので、体系的に余裕を持って付番してください。</td></tr>
+    <tr><td>valid</td><td>このページの有効期間を設定します。設定しないとすぐに有効になります。
+      期間が指定されているとその期間だけページが表示されます。</td></tr>
+    <tr><td>titile</td><td>ローカル変数、ここではタイトル表記用に使用しています。</td></tr>
+    <tr><td>short</td><td>タイトルのショート名に使用しています。なければtitleになります。</td></tr>
+    <tr><td>description</td><td>ローカル変数、ここではdescription用に使用しています。</td></tr>
+    <tr><td>keyword</td><td>ローカル変数、ここではkeywords用に指定しています。</td></tr>
+  </tbody></table></dd><dt>ページ設定</dt></dl>
+    
+</section>
+
+
+<section id="parts">
+<h2>CMS部品</h2>
+
+  <div class="topic">
+  <h3>ページ挿入</h3>
+    <dl class="howto"><dd>cms-page="BODY"</dd><dt>
+      ページコンテンツから「-BODY」部分をとりだして、タグの内側に展開します。
+      ページコンテンツはHTMLファイルと同じ場所に「xxxx.html」のファイル拡張子を
+      「page」にして保存します。
+    </dt></dl>
+  </div>
+
+  <div class="topic">
+  <h3>グローバルメニュー作成</h3>
+    <dl class="howto"><dd>cms-parts="navbar"</dd><dt>
+      <p>テーマのレコードが作成され、「menu1.frm」というテンプレートまたは、
+      「navbar_form」キーワードで設定されたテンプレートを使って展開が行われます。</p>
+      テーマのレコードとは、各テーマフォルダの「index.page」での設定を集めてソートをかけたものです。
+      このサイトでは先頭のナビゲーションバーで使われています。
+    </dt></dl>
+
+  <dl class="source"><dt>テンプレートの例/template/menu1.frm</dt>
+    <dd class="Load" href="/source/menu1.frm"></dd>
+  </dl>
+  <p>「-HEAD部」は頭に、「-FOOT部」はお尻に付きます。「-NODY」部はレコードの数だけ展開されます。
+    その際に％{変数}はレコードの内容に置き換えられます。</p>
+  <p>％{now}変数は、表示しようとしているページが所属していれば「now」という文字が入ります。
+    例えば、class="％{now}"とするとCSSで文字色をつけるなどして現在位置を表すことができます。</p>
+
+  <dl class="source"><dt>自動作成されるレコードの例</dt>
+    <dd class="Load" href="/source/navbar.json"></dd>
+  </dl>
+
+  <dl class="source"><dt>展開される結果の例</dt>
+    <dd class="Load" href="/source/navbar.html"></dd>
+  </dl>
+
+  </div>
+
+  <div class="topic">
+  <h3>テーマ内メニュー作成</h3>
+    <dl class="howto"><dd>cms-parts="menu"</dd><dt>
+      <p>テーマ内のメンバーレコードが作成され、「menu2.frm」というテンプレートまたは、
+      「sidemenu_form」キーワードで設定されたテンプレートを使って展開が行われます。</p>
+      <p>テーマ内のメンバーレコードとは、各テーマフォルダ内の
+      「.page」拡張子ファイルの設定を集めてソートをかけたものです。
+      このサイトではサイドメニューで使われています。</p>
+    </dt></dl>
+  </div>
+
+  <div class="topic">
+  <h3>サイトメニュー作成</h3>
+    <dl class="howto"><dd>cms-parts="foot"</dd><dt>
+      <p>サイト内の全ページレコードが作成され、「footer1.frm」というテンプレートまたは、
+      <p>「foot_form」キーワードで設定されたテンプレートを使って展開が行われます。</p>
+      サイトを構成する「.page」拡張子ファイルの設定を集めてソートをかけたものです。
+      このサイトではフッターのサイトメニューで使われています。</p>
+    </dt></dl>
+  </div>
+
+  <div class="topic">
+  <h3>履歴展開挿入</h3>
+    <dl class="howto"><dd>cms-parts="history"</dd><dt>
+      <p>「history.frm」というフォームテンプレートを使い、
+      「json」フォルダの「history.json」データを読みこみ展開します。「date」キーワードは必須です。
+      日付が当日以降の場合は表示されません。予約機能と連動します。</p>
+      <p>index.cfgで「history "auto"」が指定されているときは、
+        ページ定義の-HISTORYブロックから作られます。</p>
+    </dt></dl>
+  </div>
+
+  <div class="topic">
+  <h3>共用部品挿入</h3>
+    <dl class="howto"><dd>cms-include="テンプレート"</dd><dt>
+      <p>この属性が書かれたタグの内側にテンプレートが展開されます。
+      「変数」があれば環境に応じて値が展開されます。</p>
+    </dt></dl>
+  </div>
+
+  <div class="topic">
+  <h3>データ展開挿入</h3>
+    <dl class="howto"><dd>cms-frame="テンプレート" source="JSONファイル"</dd><dt>
+      <p>「テンプレート.frm」というフォームテンプレートを使い、
+      「JSONファイル.json」データを読みこみ展開します。</p>
+    </dt></dl>
+  </div>
+
+  <div class="topic">
+  <h3>sitemap自動作成</h3>
+    <p>「/sitemap.xml」を呼び出すことでサイトマップが自動的に作成されます。
+    「priority」は各ページ定義で指定できますが、省略値は「0.5」です。
+    また、更新日付はページ定義ファイルの更新日付が使われます。</p>
+  </div>
+
+  <div class="topic">
+  <h3>タイムシフト再生機能</h3>
+    <p>「/setdate/yy.mm.dd/」を指定することで先日付での状態を確認できます。</p>
+  </div>
+
+  <div class="topic">
+  <h3>メニューの強制作成機能</h3>
+    <p>メニューは起動時と日付変化時に自動的に作られますが、
+      緊急に訂正などが発生した場合に強制的に更新することができます。
+      「/reload/」を入力します。</p>
+  </div>
+
+</section>
+
+
+<section id="appendix">
+<h2>補足事項</h2>
+
+  <div class="topic">
+  <h3>変数</h3>
+    <p>変数には設定にかかれているパラメータ変数と、
+      JSONやメニューなどで内部で作られるレコード変数があります。</p>
+    <p>パラメータ変数は＃で接頭され、レコード変数は％で接頭されます。
+      以下に自動作成される変数を記します。</p>
+    <dl class="expla"><dd><table><tbody>
+      <tr><th>キーワード</th><th>説明</th></tr>
+      <tr><td>＃{group}</td><td>テーマフォルダ名、ルートは「home」</td></tr>
+      <tr><td>＃{next}</td><td>次のページのURL</td></tr>
+      <tr><td>＃{prior}</td><td>前のページのURL</td></tr>
+      <tr><td>＃{url}</td><td>自分自身のURL</td></tr>
+      <tr><td>％{now}</td><td>現在ページの時に「now」それ以外は「」</td></tr>
+      <tr><td>％{level}</td><td>ルートは0、テーマフォルダ内は1</td></tr>
+    </tbody></table></dd><dt>自動生成パラメータ</dt></dl>
+  </div>
+  
+  <div class="topic">
+  <h3>フォルダ構成</h3>
+    <dl class="boxed"><dt>フォルダ構成</dt><dd>
+      <img src="/image/cmstree.png" class="photoM" alt="cmsフォルダtree" />
+    <dl class="expla"><dd><table><tbody>
+      <tr><th>フォルダ</th><th>説明</th></tr>
+      <tr><td>image</td><td>画像保管</td></tr>
+      <tr><td>js</td><td>JavaScript保管</td></tr>
+      <tr><td>json</td><td>JSONデータ保管</td></tr>
+      <tr><td>source</td><td>ソースファイル保管</td></tr>
+      <tr><td>template</td><td>テンプレート保管</td></tr>
+      <tr><td>local</td><td>設置環境依存ファイル</td></tr>
+      <tr><td>nodejs</td><td>nodejsソースフォルダ</td></tr>
+    </tbody></table></dd><dt>フォルダ内容</dt></dl>
+    決められたフォルダに各データを保管してください。
+    cloud, micro, moble server, はテーマフォルダです。
+    </dd></dl>
+  </div>
+  
+  <div class="topic">
+  <h3>インストール</h3>
+    <dl class="howto"><dd>git clone https://github.org/m0kimura/web-project.git</dd><dt>
+      上記フォルダ構成をgithubからインストールします。
+    </dt></dl>
+  </div>
+
+  <div class="topic">
+  <h3>CSS設定</h3>
+
+    <p>CSSファイルにも変数を設定することが出来ます。１つはCSS用変数です。もう１つは基本設定、
+      テーマ設定、ページコンテンツのパラメタです。この変数は＃{xxx}でHTMLと同じように呼び出せます。
+      CSS変数は下の一覧ものがあり、％{xxxx}で呼び出します。</p>
+
+    <dl class="expla"><dd><table><tbody>
+      <tr><th>変数</th><th>説明</th></tr>
+      <tr><td>back</td><td>指定された基本色群の背景色</td></tr>
+      <tr><td>light</td><td>指定された基本色群の薄色</td></tr>
+      <tr><td>emdium</td><td>指定された基本色群の中間色</td></tr>
+      <tr><td>standard</td><td>指定された基本色群の標準色</td></tr>
+      <tr><td>dark</td><td>指定された基本色群の濃色</td></tr>
+      <tr><td>text</td><td>指定された基本色群のテキスト色</td></tr>
+      <tr><td>fontSS</td><td></td>10px</tr>
+      <tr><td>fontS</td><td></td>12px</tr>
+      <tr><td>fontM</td><td></td>14px</tr>
+      <tr><td>fontL</td><td></td>18px</tr>
+      <tr><td>fontO</td><td></td>20px</tr>
+      <tr><td>fontXO</td><td>24px</td></tr>
+    </tbody></table></dd><dt>CSS用変数</dt></dl>
+
+    <p>基本色群は設定でキーワード「basecolor」で指定します。
+      なを、下記のようなCOLOR NAMEで指定してください。</p>
+    
+    <dl class="expla"><dd><table><tbody>
+      <tr><th>COLOR NAME</th><th>back</th><th>light</th><th>medium</th><th>standard</th><th>dark</th><th>text</th></tr>
+      <tr><td>Ruby</td><td style="background-color: #f5d2db">　　</td><td style="background-color: #eba4b8">　　</td><td style="background-color: #cc1c4d">　　</td><td style="background-color: #9e032e">　　</td><td style="background-color: #7a0222">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Fire engine</td><td style="background-color: #facdd0">　　</td><td style="background-color: #eda4a7">　　</td><td style="background-color: #ce2029">　　</td><td style="background-color: #9e030b">　　</td><td style="background-color: #73040b">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Burgundy</td><td style="background-color: #ead0d2">　　</td><td style="background-color: #d4a0a4">　　</td><td style="background-color: #94121c">　　</td><td style="background-color: #6e060d">　　</td><td style="background-color: #4a090e">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Brick red</td><td style="background-color: #f4ded6">　　</td><td style="background-color: #e3ad99">　　</td><td style="background-color: #a32a00">　　</td><td style="background-color: #891700">　　</td><td style="background-color: #611000">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Vermillion</td><td style="background-color: #e6d1cf">　　</td><td style="background-color: #cca29f">　　</td><td style="background-color: #e34234">　　</td><td style="background-color: #ad2416">　　</td><td style="background-color: #80170e">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Red</td><td style="background-color: #ffd4cc">　　</td><td style="background-color: #ffa899">　　</td><td style="background-color: #ff2600">　　</td><td style="background-color: #bf1d00">　　</td><td style="background-color: #801300">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Carmine</td><td style="background-color: #f2ccd4">　　</td><td style="background-color: #e599aa">　　</td><td style="background-color: #ff0038">　　</td><td style="background-color: #bf002a">　　</td><td style="background-color: #80001c">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Orange red</td><td style="background-color: #fadaca">　　</td><td style="background-color: #f0b092">　　</td><td style="background-color: #ff4e00">　　</td><td style="background-color: #c72b00">　　</td><td style="background-color: #802700">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Dark orange</td><td style="background-color: #faded0">　　</td><td style="background-color: #f6bea0">　　</td><td style="background-color: #e85c12">　　</td><td style="background-color: #b53300">　　</td><td style="background-color: #802200">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Pumkin</td><td style="background-color: #ffe3d1">　　</td><td style="background-color: #ffc8a3">　　</td><td style="background-color: #ff7518">　　</td><td style="background-color: #aa3e00">　　</td><td style="background-color: #b13e1e">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Orange</td><td style="background-color: #ffecd6">　　</td><td style="background-color: #ffcf99">　　</td><td style="background-color: #ff8f00">　　</td><td style="background-color: #f26c0d">　　</td><td style="background-color: #aa3e00">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Orange peel</td><td style="background-color: #ffeccc">　　</td><td style="background-color: #ffd999">　　</td><td style="background-color: #ff9f00">　　</td><td style="background-color: #f27500">　　</td><td style="background-color: #c75000">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Coral</td><td style="background-color: #ffe6db">　　</td><td style="background-color: #ffcdb6">　　</td><td style="background-color: #ff8249">　　</td><td style="background-color: #f06937">　　</td><td style="background-color: #993b17">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Terracota</td><td style="background-color: #f7e7e0">　　</td><td style="background-color: #ecc3b2">　　</td><td style="background-color: #d06a3e">　　</td><td style="background-color: #b55632">　　</td><td style="background-color: #823113">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Brown</td><td style="background-color: #eadbcc">　　</td><td style="background-color: #d5b799">　　</td><td style="background-color: #964b00">　　</td><td style="background-color: #713a00">　　</td><td style="background-color: #553000">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Chocolate</td><td style="background-color: #ebdfd9">　　</td><td style="background-color: #ccaba1">　　</td><td style="background-color: #703422">　　</td><td style="background-color: #521c13">　　</td><td style="background-color: #4a140b">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Sienna</td><td style="background-color: #e8d7cf">　　</td><td style="background-color: #d1afa0">　　</td><td style="background-color: #8c3611">　　</td><td style="background-color: #69270d">　　</td><td style="background-color: #461a09">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Dark coffee</td><td style="background-color: #e0d7d4">　　</td><td style="background-color: #c1afa8">　　</td><td style="background-color: #633826">　　</td><td style="background-color: #4f1a03">　　</td><td style="background-color: #361305">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Sepia</td><td style="background-color: #e3d9cf">　　</td><td style="background-color: #c7b39f">　　</td><td style="background-color: #73420e">　　</td><td style="background-color: #593000">　　</td><td style="background-color: #402200">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Umber</td><td style="background-color: #eae0d9">　　</td><td style="background-color: #d5c2b3">　　</td><td style="background-color: #956642">　　</td><td style="background-color: #704d32">　　</td><td style="background-color: #4b3321">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Tans</td><td style="background-color: #f3e8df">　　</td><td style="background-color: #e6d2bf">　　</td><td style="background-color: #c18e60">　　</td><td style="background-color: #996a3d">　　</td><td style="background-color: #73502e">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Bronze</td><td style="background-color: #f6e5d4">　　</td><td style="background-color: #edcca9">　　</td><td style="background-color: #d27f29">　　</td><td style="background-color: #a65c11">　　</td><td style="background-color: #693906">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Amber</td><td style="background-color: #fef3d7">　　</td><td style="background-color: #fce19b">　　</td><td style="background-color: #ffb300">　　</td><td style="background-color: #ed7710">　　</td><td style="background-color: #9b4200">　　</td><td style="background-color: #693906">　　</td></tr>
+      <tr><td>Gold</td><td style="background-color: #fff9d6">　　</td><td style="background-color: #fff099">　　</td><td style="background-color: #ffd900">　　</td><td style="background-color: #ffa400">　　</td><td style="background-color: #e68e15">　　</td><td style="background-color: #693906">　　</td></tr>
+      <tr><td>Sunglow</td><td style="background-color: #fffae9">　　</td><td style="background-color: #ffeaa5">　　</td><td style="background-color: #ffca1d">　　</td><td style="background-color: #f5a71c">　　</td><td style="background-color: #e68e15">　　</td><td style="background-color: #7a4608">　　</td></tr>
+      <tr><td>Lemon</td><td style="background-color: #fffdcc">　　</td><td style="background-color: #fffa99">　　</td><td style="background-color: #fff300">　　</td><td style="background-color: #ffd400">　　</td><td style="background-color: #e3ac00">　　</td><td style="background-color: #a75400">　　</td></tr>
+      <tr><td>Pear</td><td style="background-color: #f6f8d1">　　</td><td style="background-color: #eef2a4">　　</td><td style="background-color: #d4de1b">　　</td><td style="background-color: #b5bf07">　　</td><td style="background-color: #8f9601">　　</td><td style="background-color: #828a16">　　</td></tr>
+      <tr><td>Lime</td><td style="background-color: #eafdcf">　　</td><td style="background-color: #cbfa87">　　</td><td style="background-color: #c1f900">　　</td><td style="background-color: #9fde23">　　</td><td style="background-color: #7fb900">　　</td><td style="background-color: #156615">　　</td></tr>
+      <tr><td>Chlorophyle</td><td style="background-color: #ebf4d3">　　</td><td style="background-color: #d7e9a8">　　</td><td style="background-color: #9cc925">　　</td><td style="background-color: #7ba60d">　　</td><td style="background-color: #5d8005">　　</td><td style="background-color: #49811f">　　</td></tr>
+      <tr><td>Foliage</td><td style="background-color: #e2e8d1">　　</td><td style="background-color: #c4d1a4">　　</td><td style="background-color: #6c8b1b">　　</td><td style="background-color: #57730e">　　</td><td style="background-color: #3e5404">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Olive</td><td style="background-color: #e4eacb">　　</td><td style="background-color: #d6dfb2">　　</td><td style="background-color: #697800">　　</td><td style="background-color: #4a5200">　　</td><td style="background-color: #2f3600">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Army</td><td style="background-color: #dbdcd2">　　</td><td style="background-color: #b7baa5">　　</td><td style="background-color: #515918">　　</td><td style="background-color: #343b04">　　</td><td style="background-color: #26290f">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Grass</td><td style="background-color: #ebfcdf">　　</td><td style="background-color: #c2f79e">　　</td><td style="background-color: #5ba825">　　</td><td style="background-color: #377d00">　　</td><td style="background-color: #00570a">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Kelly green</td><td style="background-color: #dbf1cc">　　</td><td style="background-color: #b6e299">　　</td><td style="background-color: #49b700">　　</td><td style="background-color: #378900">　　</td><td style="background-color: #255c00">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Forest</td><td style="background-color: #d2e7d2">　　</td><td style="background-color: #a4cfa4">　　</td><td style="background-color: #1c881c">　　</td><td style="background-color: #156615">　　</td><td style="background-color: #0e440e">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Green</td><td style="background-color: #cce5d8">　　</td><td style="background-color: #99cbb2">　　</td><td style="background-color: #007e3e">　　</td><td style="background-color: #005b2a">　　</td><td style="background-color: #004420">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Emerald</td><td style="background-color: #cceae4">　　</td><td style="background-color: #99d6c8">　　</td><td style="background-color: #009876">　　</td><td style="background-color: #007259">　　</td><td style="background-color: #004c3b">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Turquoise</td><td style="background-color: #d6f3f0">　　</td><td style="background-color: #99e1da">　　</td><td style="background-color: #00b3a2">　　</td><td style="background-color: #009488">　　</td><td style="background-color: #005b5a">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Teal</td><td style="background-color: #deebee">　　</td><td style="background-color: #adced4">　　</td><td style="background-color: #338594">　　</td><td style="background-color: #006779">　　</td><td style="background-color: #004d5b">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Cold blue</td><td style="background-color: #cceaf1">　　</td><td style="background-color: #99d5e2">　　</td><td style="background-color: #0095b7">　　</td><td style="background-color: #007089">　　</td><td style="background-color: #004b5c">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Cyaan</td><td style="background-color: #cceffc">　　</td><td style="background-color: #99dff9">　　</td><td style="background-color: #00aeef">　　</td><td style="background-color: #0090bf">　　</td><td style="background-color: #006d90">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Aquamarine</td><td style="background-color: #d3f6fd">　　</td><td style="background-color: #a6edfc">　　</td><td style="background-color: #21d1f7">　　</td><td style="background-color: #00a2d9">　　</td><td style="background-color: #0079a8">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Ice</td><td style="background-color: #f8fdff">　　</td><td style="background-color: #f1faff">　　</td><td style="background-color: #dbf3ff">　　</td><td style="background-color: #a8e3ff">　　</td><td style="background-color: #71c2eb">　　</td><td style="background-color: #25679d">　　</td></tr>
+      <tr><td>Peace</td><td style="background-color: #d7eaf8">　　</td><td style="background-color: #afd4f1">　　</td><td style="background-color: #3794dd">　　</td><td style="background-color: #136db5">　　</td><td style="background-color: #0b5794">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Denim</td><td style="background-color: #cce0f2">　　</td><td style="background-color: #99c1e5">　　</td><td style="background-color: #0064bf">　　</td><td style="background-color: #004f96">　　</td><td style="background-color: #003b71">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Steel blue</td><td style="background-color: #d7e6f0">　　</td><td style="background-color: #b0cde2">　　</td><td style="background-color: #3983b6">　　</td><td style="background-color: #246594">　　</td><td style="background-color: #154b70">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Azure</td><td style="background-color: #cce7ff">　　</td><td style="background-color: #99ceff">　　</td><td style="background-color: #0085ff">　　</td><td style="background-color: #0064bf">　　</td><td style="background-color: #004b8f">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Royal blue</td><td style="background-color: #d4e2f9">　　</td><td style="background-color: #a9c6f4">　　</td><td style="background-color: #2870e3">　　</td><td style="background-color: #1e54aa">　　</td><td style="background-color: #143872">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Navy blue</td><td style="background-color: #ccd5e5">　　</td><td style="background-color: #99aacb">　　</td><td style="background-color: #003494">　　</td><td style="background-color: #00205d">　　</td><td style="background-color: #00163e">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Indigo</td><td style="background-color: #dad1e6">　　</td><td style="background-color: #b6a3ce">　　</td><td style="background-color: #481884">　　</td><td style="background-color: #33036e">　　</td><td style="background-color: #270059">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Violet</td><td style="background-color: #e5d4eb">　　</td><td style="background-color: #cba9d7">　　</td><td style="background-color: #7c279b">　　</td><td style="background-color: #5d1d74">　　</td><td style="background-color: #3e144e">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Fuschia</td><td style="background-color: #f5d8e9">　　</td><td style="background-color: #ebb1d3">　　</td><td style="background-color: #ce3c92">　　</td><td style="background-color: #ab156d">　　</td><td style="background-color: #8f0758">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Carnation pink</td><td style="background-color: #ffeef4">　　</td><td style="background-color: #ffdde9">　　</td><td style="background-color: #ffaac9">　　</td><td style="background-color: #cc7695">　　</td><td style="background-color: #9c546f">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Salmon</td><td style="background-color: #ffeaed">　　</td><td style="background-color: #ffd5da">　　</td><td style="background-color: #ff95a3">　　</td><td style="background-color: #d9737f">　　</td><td style="background-color: #a65059">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>French rose</td><td style="background-color: #fedde7">　　</td><td style="background-color: #fdbbd0">　　</td><td style="background-color: #fb5589">　　</td><td style="background-color: #c43b67">　　</td><td style="background-color: #a11d47">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Pink</td><td style="background-color: #fee5ef">　　</td><td style="background-color: #ffd3df">　　</td><td style="background-color: #f42376">　　</td><td style="background-color: #d02261">　　</td><td style="background-color: #a8025b">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Magenta</td><td style="background-color: #ffd6e9">　　</td><td style="background-color: #ffacd2">　　</td><td style="background-color: #ff308f">　　</td><td style="background-color: #bf246b">　　</td><td style="background-color: #801848">　　</td><td style="background-color: #ffffff">　　</td></tr>
+      <tr><td>Cerise</td><td style="background-color: #f9d8df">　　</td><td style="background-color: #f4b2c0">　　</td><td style="background-color: #e33e61">　　</td><td style="background-color: #b3213e">　　</td><td style="background-color: #86192f">　　</td><td style="background-color: #ffffff">　　</td></tr>
+    </tbody></table></dd><dt>指定できるカラー</dt></dl>
+    
+  </div>
+
+</section>
+
+-BODY 17/11/10
+<section id="docker">
+<h2>Docker</h2>
+  <p>このCMSを簡単につかえるよう、こちらでdockerのイメージをご用意しました。</p>
+
+  <div class="topic">
+  <h3>Dockerfileとcli</h3>
+    <dl class="command"><dt>インストール</dt>
+      <dd>
+        $ git clone https://github.com/m0kimura/cmsserver
+      </dd>
+    </dl>
+  </div>
+
+  <div class="topic">
+  <h3>使い方</h3>
+  　<p>HTMLフォルダを$HOMEからの相対パスで$DIRに指定します。</p>
+    <dl class="command"><dt>実行</dt>
+      <dd>
+        $ export DIR=path/to/html/folder<br/>
+        $ cd cmsserver<br/>
+        $ ./docker.sh<br/>
+      </dd>
+    </dl>
+  </div>
+  <p><a href="/cloud/docker.html">Dockerのインストールや使い方はこちらから</a></p>
+</section>
+
+

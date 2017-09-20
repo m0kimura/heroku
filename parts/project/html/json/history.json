@@ -1,0 +1,14 @@
+[
+  {"date": "16/04/20", "title": "「AWSライブラリの手引」を追加しました。", "url": "/server/knamazon.html",
+    "description": "AWS操作ライブラリの機能と使い方を説明しています。"},
+  {"date": "16/04/16", "title": "「画面ライブラリの手引」を追加しました。", "url": "/mobile/screen.html",
+    "description": "cordovaでの画面作成ライブラリの使い方を説明しています。"},
+  {"date": "16/04/10", "title": "「コンテンツ管理（CMS）」を追加しました。", "url": "/server/cms.html",
+    "description": "このサイトでも使用している、オリジナルCMSの仕様や利用の方法について解説しています。"},
+  {"date": "16/04/04", "title": "「gitを実践的に使う」を追加しました。", "url": "/cloud/git.html",
+    "description": "gitの登録から運用に至る実践的な使い方をチーフ、メンバの役割に応じて解説しています。"},
+  {"date": "16/04/01", "title": "サイトグランド’オープン", "url": "/index.html",
+    "description": "サイトを本格的にオープンしました。"},
+  {"date": "16/03/30", "title": "サイトテスト公開", "url": "/index.html",
+    "description": "サイトのグランドオープンを控えて、サイトの状況を確認するために公開をはじめました。"}
+]

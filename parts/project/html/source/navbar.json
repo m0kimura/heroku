@@ -1,0 +1,12 @@
+[
+ {"sort":"A00", "level":0, "section":"", "url":"/index.html","now":"",
+   "title":"サイトの紹介（IoTとは）", "short":"ホーム", "group":"top"},
+ {"sort":"B00", "level":1, "section":"", "url":"/cloud/index.html","now":"now",
+   "title":"AWSの準備、登録", "short":"クラウド", "group":"cloud"},
+ {"sort":"C00", "level":1, "section":"", "url":"/server/index.html","now":"",
+   "title":"Nodejsの準備", "short":"サーバー", "group":"server"},
+ {"sort":"D00", "level":1, "section":"", "url":"/mobile/index.html","now":"", 
+   "title":"Cordovaの紹介と準備", "short":"モバイル", "group":"mobile"},
+ {"sort":"E00", "level":1, "section":"", "url":"/micro/index.html", "now":"",
+   "title":"使うための準備をする", "short":"マイクロ", "group":"micro"}
+]

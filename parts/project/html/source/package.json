@@ -1,0 +1,8 @@
+{
+  "name": "knuty",
+  "description": "Kmrweb.net universal utility for postgresql",
+  "version": "0.1.0",
+  "author": {"name": "michihiro kimura", "email": "kimura@kmrweb.net"},
+  "repository" : { "type" : "git", "url" : "https://m0kimura@bitbucket.org/m0kimura/node-tools.git"},
+  "main": "./knuty.js"
+}

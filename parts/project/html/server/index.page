@@ -1,0 +1,169 @@
+-PARM 16/01/21:
+  Title       Nodejsの準備
+  Short     サーバー
+  description 入門者向けにNodejaのインストールや使い方、便利なライブラリについて説明しています。
+  keyword     入門者向け解説
+  Sort        C00
+  Valid       16/01/01:
+-HISTORY
+  17/12/10 Dockerでのnodejs実行環境の利用を追加しました。
+-BODY 16/01/21:
+
+<section id="Top">
+  <h2>はじめに</h2>
+  <p>Node.jsはJavaScriptでサーバーサイドの処理ができる画期的なフレームワークです。
+    JavaScriptといえばWebブラウザでの処理というのが定番ですが、
+    ほとんどそのままの形でサーバーサイドも対応が可能なんです。</p>
+  <p>また、npm(node package manager)と言われる優秀なパッケージ管理ソフトを持っていて、
+    これだけでもよく利用されるようになっています。</p>
+  <a href="http://nodejs.jp/" target="_blank">
+    <img src="/image/nodejstop.png" class="photoL" alt="nodejsサイトイメージ"/></a>
+  <p>特徴はGoogle Chrome用に開発された高パフォーマンスのJavaScriptエンジンである、
+    V8をベースにしているので軽量でありながら効率よい処理ができることです。</p>
+  <p>また、ファイルやデータベース、ネットワークなどの多くの機能を自由に追加できるようになっている
+    (npmで簡単に組み込むことができる)ので、サーバーサイドJavaScriptとして最も注目を集めています。</p>
+
+
+</section>
+
+<section id="install">
+<h2>インストール</h2>
+  <p>ubuntuの場合のインストールは至極簡単です。apt-getによるコマンドを発行するだけです。</p>
+  <dl class="command"><dt>インストール（nodejs & npm）</dt>
+    <dd>$ sudo apt-get update<br/>$ sudo apt-get install nodejs npm</dd>
+  </dl>
+
+  <p>このままですと、「nodejs」で呼び出すこととなりますので、「node」でnodejsを動かせるように
+  「alternative」をかけておきます。</p>
+  <dl class="command"><dt>呼び出し変更</dt>
+    <dd>$ sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10</dd>
+  </dl>
+
+  <p>正しくインストールできているかを確認しておきます。</p>
+  <dl class="command"><dt>確認</dt>
+    <dd>$ node -v<br/>v0.10.25</dd>
+  </dl>
+
+</section>
+
+<section id="howto">
+<h2>使い方</h2>
+  <p>NodejsはJavaScriptですので、文法的にはブラウザでのJavaScriptと同じです。</p>
+
+  <div class="topic">
+  <h3>ソースの作成</h3>
+    <dl class="step"><dt>作成要領</dt><dd><ol>
+      <li>どこでもいいですが、「.js」のソースファイルを作ります。</li>
+      <li>呼び出しはターミナルから「node program.js」と入力します。</li>
+      <li>ライブラリの利用には「var Forever=require('forever')」のようにrequireを使います。</li>
+    </ol></dd></dl>
+  </div>
+
+  <div class="topic">
+  <h3>簡単なサンプル</h3>
+    <p>簡単すぎますが、下記のようなhello.jsプログラムを作り、
+      ターミナルから「node hello.js」と入力してください。</p>
+    <dl class="source"><dt>hello.js</dt>
+      <dd class="Load" href="/source/nodehello.js"></dd>
+    </dl>
+  </div>
+
+  <div class="topic">
+  <h3>直接起動モジュール</h3>
+    <p>node xxxxx.jsではなくて、シェルのようにファイル名を指定して、
+      直接的に起動するためのファイル作成ができます。</p>
+    <dl class="step"><dt>直接起動モジュール作成ステップ</dt><dd><ol>
+      <li>ファイルを作成します。</li>
+      <li>その１行目に「#!/usr/bin/env node」を入れます。</li>
+      <li>その下にJAvaScriptでプログラムを書きます。</li>
+      <li>ファイルに実行属性を与えます。</li>
+    </ol></dd></dl>
+  </div>
+
+</section>
+
+<section id="library">
+<h2>ライブラリ</h2>
+  <p>nodejsは様々なオープンライブラリが存在します。それらはすべてnpmのレポジトリで管理され、
+    npmコマンドを利用することでネットワーク上のレポジトリからダウンロードされ、
+    インストールされます。</p>
+
+  <div class="topic">
+  <h3>格納場所</h3>
+
+    <p>「npm」コマンドを使ってインストールをすると、
+      「-g」オプションではシステム上の「npm」がインストールされた場所
+      (Ubuntuでは「usr」フォルダ)に格納されます。</p>
+    <p>「-g」オプションが指定されない場合はカレントの下に「node_modules」のフォルダが作成され、
+      その中に格納されます。</p>
+    <p>いくつもの階層に「node_modules」がある場合には、
+      カレントから順に上のディレクトリに対して検索をかけ、最初に見つかったモジュールが採用されます。
+      そして、最後にグローバルなモジュールが参照されます。</p>
+    <p>同じモジュールでもバージョンにより使い分けることが必要な場合や、動作を確実にするためには、
+      確実なロケーションに意識してインストールします。</p>
+
+  </div>
+
+  <div class="topic">
+  <h3>便利なライブラリ</h3>
+
+    <dl class="expla"><dd><table><tbody>
+      <tr><th>LIBRARY</th><th>説明</th></tr>
+      <tr><td>forever</td><td>nodeプログラムをデーモン化して、異常終了時には再起動します。</td></tr>
+      <tr><td>mongo</td><td>nodeと相性の良いJSON対応のMONGOドキュメントデータベース</td></tr>
+      <tr><td>pg</td><td>postgreSQLデータベースドライバ</td></tr>
+      <tr><td>socket.io</td><td>軽量なソケット通信をサポートする</td></tr>
+      <tr><td>fibers</td><td>非同期処理の待ち合わせを行うことで逐次制御を可能に</td></tr>
+      <tr><td>openjtalk</td><td>日本語音声合成エンジン</td></tr>
+      <tr><td>express</td><td>ウェブアプリフレームワーク</td></tr>
+    </tbody></table></dd><dt>便利なライブラリ一覧</dt></dl>
+
+  </div>
+
+  <div class="topic">
+  <h3>ライブラリの作り方</h3>
+
+    <p>実行プログラムだけでなく、上記のようなライブラリを作りこむこともできます。</p>
+    <dl class="step"><dt>ライブラリの作成ステップ</dt><dd><ol>
+      <li>「node_modules」のフォルダ内に「ライブラリ名」のフォルダを作成します。</li>
+      <li>ライブラリのプログラムを「ライブラリ名」.jsという名前で作成します。</li>
+      <li>module.exports=オブジェクトでモジュール全体を参照できるようにします。</li>
+      <li>「package.json」ファイルを編集します。</li>
+    </ol></dd></dl>
+
+    <dl class="source"><dt>package.jsonの例</dt>
+      <dd class="Load" href="/source/package.json"></dd>
+    </dl>
+  </div>
+
+</section>
+
+-BODY 17/12/10
+<section id="docker">
+<h2>Docker</h2>
+  <p>最も簡単にスタートするにはDockerを利用することです。こちらでdockerのイメージをご用意しました。</p>
+
+  <div class="topic">
+  <h3>Dockerfileとcli</h3>
+    <dl class="command"><dt>インストール</dt>
+      <dd>
+        $ git clone https://github.com/m0kimura/node
+      </dd>
+    </dl>
+  </div>
+
+  <div class="topic">
+  <h3>使い方</h3>
+  　<p>nodeのアプリのフォルダを$HOMEからの相対パスで$DIRに指定します。
+       $MODULEに実行モジュールを指定すると実行されます。</p>
+    <dl class="command"><dt>インストール</dt>
+      <dd>
+        $ export DIR=path/to/source/folder<br/>
+        $ cd node<br/>
+        $ ./docker.sh<br/>
+      </dd>
+    </dl>
+  <p><a href="/cloud/docker.html">Dockerのインストールや使い方はこちらから</a></p>
+  </div>
+
+</section>

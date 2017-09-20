@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta charset="utf-8"/>
+<title>#{title} / #{groupword} / IoTの世界</title>
+<meta name="description" content="Kmrweb Dot NetはIoTに関連する幅広い情報を紹介しています。このページでは#{description}"/>
+<meta name="keywords" content="IoT, #{groupword}, #{keyword}" />
+<meta name="author" content="#{author}"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="/css/base.css"/>
+<link rel="stylesheet" href="/css/main.css"/>
+<link rel="alternate" hreflang="ja" href="http://www.kmrweb.net#{url}">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="/favicon.ico"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+</head>
+<body>
+<a href="#content" style="display: none">ヘッダをスキップし本文へ</a>
+<nav id="navbar" cms-parts="navbar"></nav>
+<header>
+  <img id="headerimg" class="adjust" src="/image/#{image}" alt="ヘッダ画像"/>
+  <h1 id="titlebar">#{title}</h1>
+  <nav id="guide"></nav>
+</header>
+
+<main>
+  <div id="content" cms-page="BODY"></div>
+  <div id="menu" cms-parts="menu"></div>
+</main>
+
+<footer cms-parts="foot"> </footer>
+<img id="titleimg" src=""/></body>
+<!-- SCRIPTS -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"> </script>
+<script type="text/javascript" src="/js/main.js"> </script>
+<script language="javascript">
+  Main.begin({});
+var _gaq = _gaq || [];
+_gaq.push(
+  ['_setAccount', 'UA-75827964-1'],
+  ['_setDomainName', 'kmrweb.net'],
+  ['_setCustomVar', 1, 'Section', 'Jquery', 2],
+  ['_trackPageview']
+);
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</html>

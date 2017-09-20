@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta charset="utf-8"/>
+<title>#{title} / #{groupword} / IoTの世界</title>
+<meta name="description" content="Kmrweb Dot NetはIoTに関連する幅広い情報を紹介しています。このページでは#{description}"/>
+<meta name="keywords" content="IoT, #{groupword}, #{keyword}" />
+<meta name="author" content="#{author}"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<link rel="stylesheet" href="/css/base.css"/>
+<link rel="stylesheet" href="/css/main.css"/>
+<link rel="alternate" hreflang="ja" href="http://www.kmrweb.net#{url}">
+<!--[if lt IE 9]>
+<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<link rel="shortcut icon" href="/favicon.ico"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+</head>
+<body>
+<nav id="navbar" pos="Fix" cms-parts="navbar"></nav>
+<header pos="parallax" class="Pc">
+  <img id="headerimg" class="PhotoF" src="/image/#{image}" alt="ヘッダ画像"/>
+</header>
+<header pos="parallax" class="Mobile">
+  <img id="Menu" src="/image/menu.png" alt="メニューアイコン"/>
+  <h1 id="titlebar">#{Title}</h1>
+</header>
+<nav id="Posvar" pos="Remain"> </nav>
+
+<main>
+  <div id="Content" cms-page="BODY"></div>
+  <div id="Side" cms-parts="menu"></div>
+</main>
+
+<footer cms-parts="foot"> </footer>
+</body>
+</html>
